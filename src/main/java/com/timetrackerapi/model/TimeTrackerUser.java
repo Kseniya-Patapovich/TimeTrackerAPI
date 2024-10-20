@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -31,6 +30,7 @@ public class TimeTrackerUser {
     private String lastName;
 
     @Column(nullable = false, unique = true)
+    @Size(min = 6, max = 15)
     private String login;
 
     @Column(nullable = false)
