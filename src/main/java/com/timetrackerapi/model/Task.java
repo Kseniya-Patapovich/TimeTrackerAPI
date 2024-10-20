@@ -22,7 +22,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "task_name", nullable = false)
     @Size(min = 5, max = 15)
     private String name;
 

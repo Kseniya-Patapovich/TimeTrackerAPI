@@ -37,7 +37,7 @@ public class TimeTrackerUser {
     @Size(min = 8, max = 20)
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "user_role", nullable = false)
     private Role role;
 
     @ManyToMany(mappedBy = "employees", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
