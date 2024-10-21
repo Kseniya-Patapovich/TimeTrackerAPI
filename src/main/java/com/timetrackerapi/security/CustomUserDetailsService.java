@@ -1,6 +1,6 @@
 package com.timetrackerapi.security;
 
-import com.timetrackerapi.exception.UserNotFoundException;
+import com.timetrackerapi.exception.UserNotFoundByLoginException;
 import com.timetrackerapi.model.TimeTrackerUser;
 import com.timetrackerapi.repository.TimeTrackerUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        TimeTrackerUser user = userRepository.findByLogin(username).orElseThrow(() -> new UserNotFoundException(username));
+        TimeTrackerUser user = userRepository.findByLogin(username).orElseThrow(() -> new UserNotFoundByLoginException(username));
         return new TimeTrackerUserDetails(user);
     }
 }
