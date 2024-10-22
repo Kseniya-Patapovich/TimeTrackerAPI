@@ -26,6 +26,10 @@ public class Task {
     @Size(min = 5, max = 15)
     private String name;
 
+    @Column(nullable = false)
+    @Size(min = 10)
+    private String description;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_to_project",

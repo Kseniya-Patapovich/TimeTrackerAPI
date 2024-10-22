@@ -72,7 +72,10 @@ public class TimeTrackerUserService {
     }
 
     public void deleteUser(long id) {
-        TimeTrackerUser user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundByIdException(id));
-        userRepository.delete(user);
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundByIdException(id);
+        }
     }
 }
