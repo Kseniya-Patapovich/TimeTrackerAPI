@@ -1,5 +1,6 @@
 package com.timetrackerapi.repository;
 
+import com.timetrackerapi.model.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
