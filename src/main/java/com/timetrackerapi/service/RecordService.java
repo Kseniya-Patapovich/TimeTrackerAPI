@@ -49,7 +49,7 @@ public class RecordService {
     @Transactional
     public void trackTime(long id, double time) {
         Record record = recordRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
-        record.setSpent(time);
+        record.setSpent(record.getSpent() + time);
         recordRepository.save(record);
     }
 

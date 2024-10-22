@@ -68,6 +68,15 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/user").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/user/id").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/user").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/user").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/user/add_task/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/user/remove_task/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/user/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/record").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/record").hasAuthority("USER")
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .anyRequest().authenticated())

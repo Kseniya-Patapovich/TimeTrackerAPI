@@ -1,9 +1,7 @@
 package com.timetrackerapi.service;
 
 import com.timetrackerapi.exception.TaskNotFoundException;
-import com.timetrackerapi.exception.UserNotFoundByIdException;
 import com.timetrackerapi.model.Task;
-import com.timetrackerapi.model.TimeTrackerUser;
 import com.timetrackerapi.model.dto.TaskCreateDto;
 import com.timetrackerapi.repository.TaskRepository;
 import com.timetrackerapi.repository.TimeTrackerUserRepository;
@@ -17,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskService {
     private final TaskRepository taskRepository;
-    private final TimeTrackerUserRepository userRepository;
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
@@ -49,23 +46,23 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    @Transactional
+   /* @Transactional
     public void addEmployeeForTask(long taskId, long userId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
         TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
-        task.getEmployees().add(user);
+        if (!task.getEmployees().contains(user) && !user.getTasks().contains(task)) {
+            task.getEmployees().add(user);
+        }
         taskRepository.save(task);
     }
 
     @Transactional
     public void removeEmployeeFromTask(long taskId, long userId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        if (userRepository.existsById(userId)) {
-            task.getEmployees().remove(userId);
-        } else {
-            throw new UserNotFoundByIdException(userId);
-        }
-    }
+        TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
+        task.getEmployees().remove(user);
+        taskRepository.save(task);
+    }*/
 
     public void deleteTask(long id) {
         if (taskRepository.existsById(id)) {

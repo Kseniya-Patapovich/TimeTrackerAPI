@@ -46,7 +46,7 @@ public class TaskController {
         taskService.updateTaskDescription(id, description);
     }
 
-    @PutMapping("/add_employee")
+    /*@PutMapping("/add_employee")
     public void addEmployeeForTask(@RequestParam long taskId, @RequestParam long userId) {
         taskService.addEmployeeForTask(taskId, userId);
     }
@@ -54,7 +54,7 @@ public class TaskController {
     @PutMapping("/remove_employee")
     public void removeEmployeeFromTask(@RequestParam long taskId, @RequestParam long userId) {
         taskService.removeEmployeeFromTask(taskId, userId);
-    }
+    }*/
 
     @DeleteMapping
     public void deleteTask(@RequestParam long id) {
