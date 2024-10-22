@@ -32,7 +32,7 @@ public class Task {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_to_project",
+            name = "user_to_task",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<TimeTrackerUser> employees;
