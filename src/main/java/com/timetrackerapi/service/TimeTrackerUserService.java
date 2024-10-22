@@ -1,10 +1,13 @@
 package com.timetrackerapi.service;
 
+import com.timetrackerapi.exception.TaskNotFoundException;
 import com.timetrackerapi.exception.UserNotFoundByIdException;
 import com.timetrackerapi.exception.UserNotFoundByLoginException;
+import com.timetrackerapi.model.Task;
 import com.timetrackerapi.model.TimeTrackerUser;
 import com.timetrackerapi.model.dto.UserCreateDto;
 import com.timetrackerapi.model.enums.Role;
+import com.timetrackerapi.repository.TaskRepository;
 import com.timetrackerapi.repository.TimeTrackerUserRepository;
 import com.timetrackerapi.security.TimeTrackerUserDetails;
 import com.timetrackerapi.utils.UserUtils;
@@ -21,6 +24,7 @@ public class TimeTrackerUserService {
     private final TimeTrackerUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserUtils userUtils;
+    private final TaskRepository taskRepository;
 
     public List<TimeTrackerUser> getAllUsers() {
         return userRepository.findAll();
@@ -37,7 +41,7 @@ public class TimeTrackerUserService {
         newUser.setFirstName(userCreateDto.getFirstName());
         newUser.setLastName(userCreateDto.getLastName());
         newUser.setLogin(userCreateDto.getLogin());
-        newUser.setPassword(userCreateDto.getPassword());
+        newUser.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         newUser.setRole(role);
         newUser.setLocked(false);
         userRepository.save(newUser);
@@ -47,7 +51,23 @@ public class TimeTrackerUserService {
     public void updatePassword(String password) {
         TimeTrackerUserDetails userDetails = userUtils.getCurrentUser();
         TimeTrackerUser user = userRepository.findByLogin(userDetails.getUsername()).orElseThrow(() -> new UserNotFoundByLoginException(userDetails.getUsername()));
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void addTaskForUser(long userId, long taskId) {
+        TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        user.getTasks().add(task);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void removeTaskFromUser(long userId, long taskId) {
+        TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        user.getTasks().remove(task);
         userRepository.save(user);
     }
 

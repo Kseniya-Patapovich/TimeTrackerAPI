@@ -19,7 +19,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserNotFoundByIdException.class)
     public ResponseEntity<String> handleUserNotFoundByIdException(UserNotFoundByIdException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<String> handleTaskNotFoundException(TaskNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
