@@ -46,24 +46,6 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-   /* @Transactional
-    public void addEmployeeForTask(long taskId, long userId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
-        if (!task.getEmployees().contains(user) && !user.getTasks().contains(task)) {
-            task.getEmployees().add(user);
-        }
-        taskRepository.save(task);
-    }
-
-    @Transactional
-    public void removeEmployeeFromTask(long taskId, long userId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
-        task.getEmployees().remove(user);
-        taskRepository.save(task);
-    }*/
-
     public void deleteTask(long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);

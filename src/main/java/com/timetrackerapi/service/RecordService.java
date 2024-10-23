@@ -40,10 +40,14 @@ public class RecordService {
         Record record = new Record();
         Task task = taskRepository.findById(recordCreateDto.getTaskId()).orElseThrow(() -> new TaskNotFoundException(recordCreateDto.getTaskId()));
         TimeTrackerUser user = userRepository.findByLogin(userUtils.getCurrentUser().getUsername()).orElseThrow(() -> new UserNotFoundByLoginException(userUtils.getCurrentUser().getUsername()));
-        record.setUser(user);
-        record.setTask(task);
-        record.setSpent(recordCreateDto.getSpent());
-        recordRepository.save(record);
+        if (user.getTasks().contains(task)) {
+            record.setUser(user);
+            record.setTask(task);
+            record.setSpent(recordCreateDto.getSpent());
+            recordRepository.save(record);
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with id=" + user.getId() + " doesn't exist task with id=" + recordCreateDto.getTaskId());
+        }
     }
 
     @Transactional

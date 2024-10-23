@@ -12,9 +12,11 @@ import com.timetrackerapi.repository.TimeTrackerUserRepository;
 import com.timetrackerapi.security.TimeTrackerUserDetails;
 import com.timetrackerapi.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -59,16 +61,24 @@ public class TimeTrackerUserService {
     public void addTaskForUser(long userId, long taskId) {
         TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        user.getTasks().add(task);
-        userRepository.save(user);
+        if (!user.getTasks().contains(task)) {
+            user.getTasks().add(task);
+            userRepository.save(user);
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with id=" + userId + " already contains task with id=" + taskId);
+        }
     }
 
     @Transactional
     public void removeTaskFromUser(long userId, long taskId) {
         TimeTrackerUser user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundByIdException(userId));
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-        user.getTasks().remove(task);
-        userRepository.save(user);
+        if (user.getTasks().contains(task)) {
+            user.getTasks().remove(task);
+            userRepository.save(user);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id=" + userId + " not found task with id=" + taskId);
+        }
     }
 
     public void deleteUser(long id) {
