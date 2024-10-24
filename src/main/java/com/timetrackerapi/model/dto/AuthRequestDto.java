@@ -1,9 +1,9 @@
 package com.timetrackerapi.model.dto;
 
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class AuthRequestDto {
     @Size(min = 6, max = 15)
     private String login;
