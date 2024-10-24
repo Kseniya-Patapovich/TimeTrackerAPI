@@ -3,6 +3,7 @@ package com.timetrackerapi.service;
 import com.timetrackerapi.exception.TaskNotFoundException;
 import com.timetrackerapi.model.Task;
 import com.timetrackerapi.model.dto.TaskCreateDto;
+import com.timetrackerapi.model.dto.TaskUpdateDto;
 import com.timetrackerapi.repository.TaskRepository;
 import com.timetrackerapi.repository.TimeTrackerUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,16 +34,14 @@ public class TaskService {
     }
 
     @Transactional
-    public void updateTaskName(long id, String name) {
+    public void updateTask(long id, TaskUpdateDto dto) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
-        task.setName(name);
-        taskRepository.save(task);
-    }
-
-    @Transactional
-    public void updateTaskDescription(long id, String description) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
-        task.setDescription(description);
+        if (dto.getName() != null) {
+            task.setName(dto.getName());
+        }
+        if (dto.getDescription() != null) {
+            task.setDescription(dto.getDescription());
+        }
         taskRepository.save(task);
     }
 
