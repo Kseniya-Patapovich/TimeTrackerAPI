@@ -2,7 +2,6 @@ package com.timetrackerapi.service;
 
 import com.timetrackerapi.exception.RecordNotFoundException;
 import com.timetrackerapi.exception.TaskNotFoundException;
-import com.timetrackerapi.exception.UserNotFoundByIdException;
 import com.timetrackerapi.exception.UserNotFoundByLoginException;
 import com.timetrackerapi.model.Record;
 import com.timetrackerapi.model.Task;
@@ -56,7 +55,7 @@ public class RecordService {
         Record record = recordRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
         TimeTrackerUser user = userRepository.findByLogin(userUtils.getCurrentUser().getUsername()).orElseThrow(() -> new UserNotFoundByLoginException(userUtils.getCurrentUser().getUsername()));
         if (user.getRecords().contains(record)) {
-            record.setSpent(record.getSpent() + time);
+            record.setSpent(time);
             recordRepository.save(record);
         } else {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Current user doesn't contain record with id=" + id);

@@ -5,7 +5,6 @@ import com.timetrackerapi.model.Task;
 import com.timetrackerapi.model.dto.TaskCreateDto;
 import com.timetrackerapi.model.dto.TaskUpdateDto;
 import com.timetrackerapi.repository.TaskRepository;
-import com.timetrackerapi.repository.TimeTrackerUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
