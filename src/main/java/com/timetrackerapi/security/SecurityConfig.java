@@ -29,10 +29,13 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private final CustomUserDetailsService customUserDetailsService;
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
-            "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
-            "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
-            "/api/test/**", "/authenticate"};
+    private static final String[] WHITE_LIST_URL = {
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+    };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,13 +44,20 @@ public class SecurityConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-
         return new OpenAPI()
-                .info(new Info().title("JavaInUse Authentication Service"))
+                .info(new Info()
+                        .title("Time Tracker API")
+                        .description("API for managing tasks and time tracking")
+                        .version("1.0.0"))
                 .addSecurityItem(new SecurityRequirement().addList("JavaInUseSecurityScheme"))
-                .components(new Components().addSecuritySchemes("JavaInUseSecurityScheme", new SecurityScheme()
-                        .name("JavaInUseSecurityScheme").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
-
+                .components(new Components()
+                        .addSecuritySchemes("JavaInUseSecurityScheme",
+                                new SecurityScheme()
+                                        .name("JWT Authentication")
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                                        .description("JWT authorization using the Bearer scheme")));
     }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
